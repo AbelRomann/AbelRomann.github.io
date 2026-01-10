@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Apply animation class to elements
     const elementsToAnimate = document.querySelectorAll('section > h2, .about-card, .timeline-item, .project-card, .skill-badge');
-    
+
     // Add CSS for animation dynamically
     const style = document.createElement('style');
     style.innerHTML = `
@@ -85,4 +85,44 @@ document.addEventListener('DOMContentLoaded', () => {
     document.head.appendChild(style);
 
     elementsToAnimate.forEach(el => observer.observe(el));
+
+    // Language Toggle Logic
+    const langToggle = document.getElementById('lang-toggle');
+    const langText = langToggle.querySelector('.lang-text');
+    let currentLang = localStorage.getItem('language') || 'es';
+
+    // Function to update content
+    function updateContent(lang) {
+        document.querySelectorAll('[data-i18n]').forEach(element => {
+            const key = element.getAttribute('data-i18n');
+            if (translations[lang] && translations[lang][key]) {
+                element.textContent = translations[lang][key];
+            }
+        });
+
+        // Update button text
+        langText.textContent = lang.toUpperCase();
+
+        // Update html lang attribute
+        document.documentElement.lang = lang;
+    }
+
+    // Initialize logic
+    if (langToggle) {
+        // Set initial state
+        updateContent(currentLang);
+
+        langToggle.addEventListener('click', () => {
+            currentLang = currentLang === 'es' ? 'en' : 'es';
+            localStorage.setItem('language', currentLang);
+            updateContent(currentLang);
+
+            // Add a small rotation animation to the globe
+            const icon = langToggle.querySelector('.fa-globe');
+            icon.style.transform = 'rotate(180deg)';
+            setTimeout(() => {
+                icon.style.transform = 'rotate(0deg)';
+            }, 300);
+        });
+    }
 });

@@ -21,6 +21,11 @@
     --gradient-hero: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
     --gradient-card: linear-gradient(145deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.6) 100%);
 
+    /* Language Button */
+    --lang-btn-bg: rgba(56, 189, 248, 0.1);
+    --lang-btn-text: #38bdf8;
+    --lang-btn-border: rgba(56, 189, 248, 0.3);
+
     /* Shadows */
     --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
@@ -186,6 +191,32 @@ nav a:hover::after {
     display: none;
     font-size: 1.5rem;
     cursor: pointer;
+}
+
+/* Language Button Styles */
+.btn-lang {
+    background: var(--lang-btn-bg);
+    border: 1px solid var(--lang-btn-border);
+    color: var(--lang-btn-text);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: inherit;
+    font-weight: 600;
+    transition: var(--transition);
+}
+
+.btn-lang:hover {
+    background: rgba(56, 189, 248, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
+}
+
+.btn-lang .fa-globe {
+    transition: transform 0.3s ease;
 }
 
 /* Hero Section */
