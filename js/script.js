@@ -125,4 +125,84 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 300);
         });
     }
+
+    // Image Long Press Interaction
+    const projectImages = document.querySelectorAll('.project-img');
+    let pressTimer;
+
+    // Create Modal Elements if they don't exist
+    if (!document.querySelector('.image-modal-overlay')) {
+        const modalOverlay = document.createElement('div');
+        modalOverlay.className = 'image-modal-overlay';
+        modalOverlay.innerHTML = `
+            <div class="modal-close"><i class="fas fa-times"></i></div>
+            <img src="" alt="Full size" class="image-modal-content">
+        `;
+        document.body.appendChild(modalOverlay);
+
+        // Close modal events
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay || e.target.closest('.modal-close')) {
+                modalOverlay.classList.remove('active');
+                setTimeout(() => {
+                    modalOverlay.style.display = 'none';
+                }, 400);
+            }
+        });
+    }
+
+    const modalOverlay = document.querySelector('.image-modal-overlay');
+    const modalImg = modalOverlay.querySelector('.image-modal-content');
+
+    function startPress(e, img) {
+        // Create indicator
+        const container = img.parentElement;
+        if (!container.querySelector('.holding-indicator')) {
+            const indicator = document.createElement('div');
+            indicator.className = 'holding-indicator';
+            container.appendChild(indicator);
+        }
+        const indicator = container.querySelector('.holding-indicator');
+        indicator.classList.add('active');
+
+        pressTimer = setTimeout(() => {
+            indicator.classList.remove('active');
+            openModal(img.src);
+        }, 1000); // 1 second hold
+    }
+
+    function cancelPress(img) {
+        clearTimeout(pressTimer);
+        const indicator = img.parentElement.querySelector('.holding-indicator');
+        if (indicator) {
+            indicator.classList.remove('active');
+        }
+    }
+
+    function openModal(src) {
+        modalImg.src = src;
+        modalOverlay.style.display = 'flex';
+        // Force reflow
+        modalOverlay.offsetHeight;
+        modalOverlay.classList.add('active');
+    }
+
+    projectImages.forEach(img => {
+        // Mouse Events
+        img.addEventListener('mousedown', (e) => startPress(e, img));
+        img.addEventListener('mouseup', () => cancelPress(img));
+        img.addEventListener('mouseleave', () => cancelPress(img));
+
+        // Touch Events
+        img.addEventListener('touchstart', (e) => {
+            startPress(e, img);
+        }, { passive: true });
+        img.addEventListener('touchend', () => cancelPress(img));
+        img.addEventListener('touchcancel', () => cancelPress(img));
+
+        // Disable context menu on long press for these images
+        img.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+        });
+    });
 });
