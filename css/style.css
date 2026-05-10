@@ -455,6 +455,22 @@ nav a:hover::after {
 
 /* Violet */
 
+.skill-android {
+    color: #3ddc84;
+}
+
+/* Android Green */
+.skill-react {
+    color: #61dafb;
+}
+
+/* React Cyan */
+.skill-cs {
+    color: #9b59b6;
+}
+
+/* C# Purple */
+
 /* Contact */
 .contact-container {
     text-align: center;
